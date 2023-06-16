@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
+		"declarationDir": "dist",
+		"lib": ["ES2021"],
+		"moduleResolution": "bundler",
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"target": "ES2021",
+		"skipLibCheck": true,
+		"strict": true,
+		"strictBindCallApply": true
+	}
+}
