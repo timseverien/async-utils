@@ -10,6 +10,7 @@ describe(chunkList.name, () => {
 			);
 		}
 	);
+
 	test.each<[number]>([[0.5], [1.1], [Infinity], [NaN]])(
 		'given non-integer, throws',
 		(chunkSize) => {

@@ -1,15 +1,15 @@
-import { PromiseInstance } from './lib/Promise';
+import { PromiseFactory } from './lib/Promise';
 import { chunkList } from './lib/list';
 
 export async function batchAll<T>(
-	promises: PromiseInstance<T>[],
+	promiseFactories: PromiseFactory<T>[],
 	batchSize: number
 ): Promise<T[]> {
-	const chunks = chunkList<T>(promises, batchSize);
-	const values: T[] = [];
+	const chunks = chunkList<PromiseFactory<T>>(promiseFactories, batchSize);
+	const values = [];
 
 	for (const chunk of chunks) {
-		const chunkValues = await Promise.all(chunk);
+		const chunkValues = await Promise.all(chunk.map((c) => c()));
 		values.push(...chunkValues);
 	}
 
