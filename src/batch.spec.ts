@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import { batchAll } from './batch';
 
 // How many milliseconds we allow to be between items within the same batch
@@ -11,35 +10,25 @@ function sleep(duration: number) {
 }
 
 describe(batchAll.name, () => {
-	test.each<[number]>([[-1], [0], [-Infinity]])(
-		'given batch size less than 0, throws',
-		(batchSize) => {
-			const promiseFactories = [
-				() => Promise.resolve(1),
-				() => Promise.resolve(2),
-				() => Promise.resolve(3),
-			];
+	test.each<[number]>([
+		[-Infinity],
+		[-1.5],
+		[-1],
+		[0],
+		[1.5],
+		[Infinity],
+		[NaN],
+	])('given batch size %p, throws', async (batchSize) => {
+		const promiseFactories = [
+			() => Promise.resolve(1),
+			() => Promise.resolve(2),
+			() => Promise.resolve(3),
+		];
 
-			expect(() => batchAll(promiseFactories, batchSize)).toThrow(
-				'Chunk size is too small'
-			);
-		}
-	);
-
-	test.each([[0.5], [1.1], [Infinity]])(
-		'given non-integer batch size, throws Error',
-		async (batchSize) => {
-			const promiseFactories = [
-				() => Promise.resolve(1),
-				() => Promise.resolve(2),
-				() => Promise.resolve(3),
-			];
-
-			expect(() => batchAll(promiseFactories, batchSize)).toThrow(
-				'Chunk size is not a safe integer'
-			);
-		}
-	);
+		await expect(() => batchAll(promiseFactories, batchSize)).rejects.toThrow(
+			'not a positive integer'
+		);
+	});
 
 	test('given Promise factories and batch size, returns the resolve values in order', async () => {
 		const batchSize = 2;
@@ -55,7 +44,7 @@ describe(batchAll.name, () => {
 		expect(result).toEqual([1, 2, 3, 4]);
 	});
 
-	test('given Promises and batch size, executes promises in a batched fashion', async () => {
+	test('given Promise factories and batch size, executes promises in a batched fashion', async () => {
 		const mockCallbackImplementation = (d: Date) => {};
 		const mockCallback1 = jest.fn(mockCallbackImplementation);
 		const mockCallback2 = jest.fn(mockCallbackImplementation);

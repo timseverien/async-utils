@@ -1,7 +1,7 @@
+import { assertPositiveInteger } from './assert';
+
 export function chunkList<T = any>(list: T[], chunkSize: number): T[][] {
-	if (chunkSize <= 0) throw new Error('Chunk size is too small');
-	if (!Number.isSafeInteger(chunkSize))
-		throw new Error('Chunk size is not a safe integer');
+	assertPositiveInteger(chunkSize);
 
 	const chunks = [];
 

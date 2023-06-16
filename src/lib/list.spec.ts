@@ -6,7 +6,7 @@ describe(chunkList.name, () => {
 		(chunkSize) => {
 			const list = [1, 2, 3, 4];
 			expect(() => chunkList(list, chunkSize)).toThrow(
-				'Chunk size is too small'
+				'not a positive integer'
 			);
 		}
 	);
@@ -16,7 +16,7 @@ describe(chunkList.name, () => {
 		(chunkSize) => {
 			const list = [1, 2, 3, 4];
 			expect(() => chunkList(list, chunkSize)).toThrow(
-				'Chunk size is not a safe integer'
+				'not a positive integer'
 			);
 		}
 	);
